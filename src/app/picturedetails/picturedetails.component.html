@@ -1,0 +1,62 @@
+<div *ngIf="data.details && data.image; else loading"  class="picturedetails"  >
+    <div>
+            <div  class="image_container" >
+                <div>
+                    <h2>{{ data.image.title }}</h2>
+                    <img [src]="data.image.src" alt="{{ data.image.title }}" />  
+                </div>
+            </div>
+
+        <div class="comments-section" *ngIf="details.info.comments">
+            <h4>commentaires</h4>
+            <ng-container *ngIf="details.info.comments._content !== '0'; else noComments">
+                <div *ngFor="let comment of data.comments" class="comment">
+                    <div >
+                        <img src="../../assets/mycodeworks.png" alt="{{ data.image.title }}"  class="comment_image"/>  
+                    </div>
+                    <div class="comment_content">
+                        <h3> {{ comment.authorname}} </h3>
+                        <p id="comment_text" [innerHTML]="comment._content"></p>
+
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #noComments>
+                <p>Pas de commentaires</p>
+            </ng-template>
+        </div>
+    </div>
+
+    <div class="right-container">
+        <h3>{{ data.details.info.owner.username }}</h3>
+        <div class="description">
+            <p *ngIf="data.details.info.description._content; else noDescription" [innerHTML]="data.details.info.description._content"></p>
+            <ng-template #noDescription>
+                <p class="no-description">Pas de description</p>
+            </ng-template>
+        </div>
+    
+        <div class="info-sections">
+            <div class="section">
+                <mat-icon style="color: rgb(0, 145, 31);">visibility</mat-icon>
+                <span>{{ data.details.info.views }} vues</span>
+            </div>
+            <div class="section">
+                <mat-icon style="color: rgb(150, 0, 137);">favorite</mat-icon>
+                <span>{{ data.details.info.isfavorite }} favoris</span>
+            </div>
+            <div class="section" style="color: rgb(48, 48, 48);">
+                <mat-icon>comment</mat-icon>
+                <span>{{ data.details.info.comments._content }} commentaires</span>
+            </div>
+        </div>
+    
+        <div class="post-date">
+            {{ data.details.info.dates.taken | date:'longDate' }}
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+    <p>Loading...</p>
+</ng-template>

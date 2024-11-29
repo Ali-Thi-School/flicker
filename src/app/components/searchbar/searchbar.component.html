@@ -1,0 +1,80 @@
+<div class="google-search-bar">
+  <div class="searchContainer"> 
+    <input (keyup.enter)="toggleSearchBarPosition()" type="text" placeholder="Search" class="custom-input" [(ngModel)]="searchVal">
+    <button mat-icon-button (click)="toggleSearchBarPosition()">
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+
+  <div class="filter-container">
+
+    <!-- Orientation Filter -->
+    <div class="filterIcon">
+      <mat-icon [matMenuTriggerFor]="orientationMenu" *ngIf="filters.orientation === 'landscape'">photo_size_select_large</mat-icon>
+      <mat-icon [matMenuTriggerFor]="orientationMenu" *ngIf="filters.orientation === 'portrait'">photo_size_select_small</mat-icon>
+      <mat-icon [matMenuTriggerFor]="orientationMenu" *ngIf="!filters.orientation || (filters.orientation !== 'landscape' && filters.orientation !== 'portrait')">photo_size_select_actual</mat-icon>
+      <mat-menu #orientationMenu="matMenu">
+        <button mat-menu-item (click)="selectOrientation('landscape')">
+          <mat-icon>photo_size_select_large</mat-icon>Landscape
+        </button> 
+        <button mat-menu-item (click)="selectOrientation('portrait')">
+          <mat-icon>photo_size_select_small</mat-icon>Portrait
+        </button>
+      </mat-menu>
+    </div>
+
+    <!-- Date Picker (No Change) -->
+    <div class="date-picker-container">
+      <div class="date-picker">
+        <label for="minDate">De</label>
+        <input type="date" id="minDate" [(ngModel)]="filters.minDate" placeholder="DD-MM-YYYY">
+      </div>
+    
+      <div class="date-picker">
+        <label for="maxDate">À</label>
+        <input type="date" id="maxDate" [(ngModel)]="filters.maxDate" placeholder="DD-MM-YYYY">
+      </div>
+    </div>
+    
+    <!-- Color Filter -->
+    <div class="filterIcon">
+      <mat-icon [matMenuTriggerFor]="menu" [ngStyle]="{'color': filters.color}" class="colors-btn">
+        {{ filters.color ? 'palette' : 'brush' }}
+      </mat-icon>
+      <mat-menu #menu="matMenu" class="color-menu">
+        <button mat-menu-item (click)="selectColor('')">
+          <span class="color-swatch" [ngStyle]="{'background-color': 'white'}"></span> None
+        </button>
+        <button mat-menu-item (click)="selectColor('red')">
+          <span class="color-swatch" [ngStyle]="{'background-color': 'red'}"></span> Red
+        </button>
+        <button mat-menu-item (click)="selectColor('green')">
+          <span class="color-swatch" [ngStyle]="{'background-color': 'green'}"></span> Green
+        </button>
+        <button mat-menu-item (click)="selectColor('blue')">
+          <span class="color-swatch" [ngStyle]="{'background-color': 'blue'}"></span> Blue
+        </button>
+      </mat-menu>
+    </div>
+    
+    <!-- Safe Search Filter -->
+    <div class="filterIcon">
+      <mat-icon [matMenuTriggerFor]="safeSearchMenu" *ngIf="filters.safe_search === '1'">check_circle</mat-icon>
+      <mat-icon [matMenuTriggerFor]="safeSearchMenu" *ngIf="filters.safe_search === '3'">block</mat-icon>
+      <mat-icon [matMenuTriggerFor]="safeSearchMenu" *ngIf="!filters.safe_search || (filters.safe_search !== '1' && filters.safe_search !== '3')">remove_circle_outline</mat-icon>
+      <mat-menu #safeSearchMenu="matMenu">
+        <button mat-menu-item (click)="setSafeSearch('1')">
+          <mat-icon>check_circle</mat-icon>Adult
+        </button>
+        <button mat-menu-item (click)="setSafeSearch('3')">
+          <mat-icon>block</mat-icon>Kids
+        </button>
+      </mat-menu>
+    </div>
+  </div> 
+
+  <div *ngIf="isEmpty" class="no-result-container">
+    <div class="no-result-message">
+      No result found for "{{ searchVal }}"
+    </div>
+</div>

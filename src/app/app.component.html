@@ -1,0 +1,12 @@
+<div class="main-container"> 
+  <div   class="app_container">
+    <div >
+      <div class="header-container" >
+          <app-searchbar (searchData)="onSearchData($event)"></app-searchbar>
+    </div>
+    </div>
+    <div>
+      <app-display [data]="searchData"></app-display>
+    </div>
+  </div>
+</div>
